@@ -1,0 +1,29 @@
+import { Schema, model } from 'mongoose';
+import { TUser } from './user.interface';
+
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+      required: [true, 'Username is required'],
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: [true, 'Email is required'],
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
+  },
+  { versionKey: false },
+);
+
+export const User = model<TUser>('User', userSchema);

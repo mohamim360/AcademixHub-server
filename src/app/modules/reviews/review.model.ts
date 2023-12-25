@@ -18,6 +18,11 @@ const reviewSchema = new Schema(
       type: String,
       required: [true, 'Review is required'],
     },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'Created by is required'],
+    },
   },
   { versionKey: false },
 );
