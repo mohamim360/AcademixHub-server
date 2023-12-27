@@ -6,6 +6,7 @@ import express, { Application, Request, Response } from 'express';
 import { CourseRoutes } from './app/modules/course/course.route';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import { CategoryRoutes } from './app/modules/category/category.route';
+import { AuthRoutes } from './app/modules/Auth/auth.route';
 
 const app: Application = express();
 
@@ -21,6 +22,8 @@ app.use('/api', ReviewRoutes);
 
 //category routes
 app.use('/api', CategoryRoutes);
+
+app.use('/api', AuthRoutes);
 
 // global error route
 app.use(globalErrorHandler)
