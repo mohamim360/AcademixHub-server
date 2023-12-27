@@ -1,8 +1,12 @@
+import { Types } from 'mongoose';
 import { TCourse } from './course.interface';
 import { Course } from './course.model';
 import { calculateDuration } from './utilities';
 
 const createCourseIntoDB = async (courseData: TCourse) => {
+
+  courseData.categoryId = new Types.ObjectId(courseData.categoryId);
+
   const newCourseData = await Course.create(courseData);
   return newCourseData;
 };
@@ -96,14 +100,21 @@ const updateCourseInDB = async (
   courseId: string,
   updateData: Partial<TCourse>,
 ) => {
-  const { tags, details, startDate: newStartDate, endDate: newEndDate, ...rest } = updateData;
+  const {
+    tags,
+    details,
+    startDate: newStartDate,
+    endDate: newEndDate,
+    ...rest
+  } = updateData;
 
   const existingCourse = await Course.findById(courseId);
   if (!existingCourse) {
-    throw new Error('Course not found'); 
+    throw new Error('Course not found');
   }
 
-  const { startDate: existingStartDate, endDate: existingEndDate } = existingCourse;
+  const { startDate: existingStartDate, endDate: existingEndDate } =
+    existingCourse;
 
   const modifiedUpdatedData: Record<string, unknown> = {
     ...rest,
@@ -168,7 +179,7 @@ const updateCourseInDB = async (
     // Calculate and update durationInWeeks
     const durationInWeeks = calculateDuration(
       modifiedUpdatedData.startDate as string,
-      modifiedUpdatedData.endDate as string
+      modifiedUpdatedData.endDate as string,
     );
     modifiedUpdatedData.durationInWeeks = durationInWeeks;
   }

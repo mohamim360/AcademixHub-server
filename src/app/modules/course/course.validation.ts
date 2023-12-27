@@ -24,7 +24,6 @@ export const courseValidationSchema = z.object({
     language: z.string(),
     provider: z.string(),
     details: courseDetailsValidationSchema,
-    createdBy:z.string(),
   }),
 });
 
