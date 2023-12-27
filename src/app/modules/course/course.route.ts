@@ -12,7 +12,7 @@ const router = express.Router();
 //Create a Course
 router.post(
   '/course',
-  auth(),
+  auth('admin'),
   validateRequest(courseValidationSchema),
 
   CourseController.createCourse,

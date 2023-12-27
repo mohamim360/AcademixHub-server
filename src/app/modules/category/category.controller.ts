@@ -7,17 +7,14 @@ import {
 //Create a Category
 export const createCategory = catchAsync(async (req, res) => {
   const categoryData = req.body;
-	console.log(categoryData);
-  const result = await createCategoryIntoDB(categoryData);
+  const AdminId = req.user._id;
+  const result = await createCategoryIntoDB(categoryData,AdminId);
 
   res.status(201).json({
     success: true,
     statusCode: 201,
     message: 'Category created successfully',
-    data: {
-      _id: result._id,
-      name: result.name,
-    },
+    data: result
   });
 });
 

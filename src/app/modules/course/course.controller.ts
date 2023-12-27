@@ -4,7 +4,7 @@ import { calculateDuration } from './utilities';
 
 const createCourse = catchAsync(async (req, res) => {
   const courseData = req.body;
-
+  const AdminId = req.user._id;
   const durationInWeeks = calculateDuration(
     courseData.startDate,
     courseData.endDate,
@@ -12,7 +12,7 @@ const createCourse = catchAsync(async (req, res) => {
 
   courseData.durationInWeeks = durationInWeeks;
 
-  const result = await CourseServices.createCourseIntoDB(courseData);
+  const result = await CourseServices.createCourseIntoDB(courseData,AdminId);
 
   res.status(201).json({
     success: true,

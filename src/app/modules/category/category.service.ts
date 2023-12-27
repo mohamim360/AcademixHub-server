@@ -2,8 +2,11 @@ import { TCategory } from './category.interface';
 import { Category } from './category.model';
 
 //Create a Category into
-export const createCategoryIntoDB = async (categoryData: TCategory) => {
-  const result = await Category.create(categoryData);
+export const createCategoryIntoDB = async (
+  categoryData: TCategory,
+  AdminId: string,
+) => {
+  const result = await Category.create({ ...categoryData, createdBy: AdminId });
   return result;
 };
 

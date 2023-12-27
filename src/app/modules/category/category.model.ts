@@ -13,7 +13,7 @@ const categorySchema = new Schema(
       ref: 'User',
     },
   },
-  { versionKey: false },
+  { versionKey: false ,timestamps:true},
 );
 
 export const Category = model<TCategory>('Category', categorySchema);

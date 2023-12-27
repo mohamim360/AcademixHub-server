@@ -1,13 +1,10 @@
-import { Types } from 'mongoose';
+
 import { TCourse } from './course.interface';
 import { Course } from './course.model';
 import { calculateDuration } from './utilities';
 
-const createCourseIntoDB = async (courseData: TCourse) => {
-
-  courseData.categoryId = new Types.ObjectId(courseData.categoryId);
-
-  const newCourseData = await Course.create(courseData);
+const createCourseIntoDB = async (courseData: TCourse, AdminId: string) => {
+  const newCourseData = await Course.create({ ...courseData, createdBy: AdminId });
   return newCourseData;
 };
 

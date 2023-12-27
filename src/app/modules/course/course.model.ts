@@ -38,13 +38,13 @@ const courseSchema = new Schema<TCourse>(
         required: [true, 'Description is required'],
       },
     },
-    
+
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
   },
-  { versionKey: false },
+  { versionKey: false, timestamps: true },
 );
 
 export const Course = model<TCourse>('Course', courseSchema);
