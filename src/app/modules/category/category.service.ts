@@ -12,6 +12,6 @@ export const createCategoryIntoDB = async (
 
 //Get All Categories
 export const getAllCategoriesFromDB = async () => {
-  const result = await Category.find();
+  const result = await Category.find().populate({path:'createdBy',select: '_id username email role'});
   return result;
 };
