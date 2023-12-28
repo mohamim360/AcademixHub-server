@@ -1,6 +1,10 @@
 
 To run this application locally, you can follow these steps:
 
+API Documentation
+
+https://documenter.getpostman.com/view/28160711/2s9YkuZyeQ
+
 ### Step 1: Install Dependencies
 Run the following command to install the project dependencies:
 
