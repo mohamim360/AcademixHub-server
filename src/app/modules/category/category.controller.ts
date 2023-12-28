@@ -26,6 +26,8 @@ export const getAllCategories = catchAsync(async (req, res) => {
     success: true,
     statusCode: 200,
     message: 'Categories retrieved successfully',
-    data: categories,
+    data: {
+      categories : categories
+    },
   });
 });

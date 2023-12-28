@@ -66,7 +66,6 @@ const changePassword = async (
   }
 
   const previousPasswords = user.passwordHistory;
-  console.log(previousPasswords);
 
   const comparisonPromises = previousPasswords.map(async (entry) => {
     return await bcrypt.compare(password.newPassword, entry.password);

@@ -8,7 +8,7 @@ async function main() {
 }
 
 // Start Express app on specified port
-app.listen(5000, () => {
+app.listen(config.port, () => {
   console.log(`app is listening on port ${config.port}`);
 });
 
