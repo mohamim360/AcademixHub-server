@@ -1,10 +1,12 @@
-
 import { TCourse } from './course.interface';
 import { Course } from './course.model';
 import { calculateDuration } from './utilities';
 
 const createCourseIntoDB = async (courseData: TCourse, AdminId: string) => {
-  const newCourseData = await Course.create({ ...courseData, createdBy: AdminId });
+  const newCourseData = await Course.create({
+    ...courseData,
+    createdBy: AdminId,
+  });
   return newCourseData;
 };
 
@@ -17,6 +19,12 @@ const getCoursesFromDB = async (query: Record<string, unknown>) => {
 
   const minPrice = parseFloat(query.minPrice as string);
   const maxPrice = parseFloat(query.maxPrice as string);
+
+  const isValidPrice = !isNaN(minPrice) && !isNaN(maxPrice);
+  const priceFilter = isValidPrice
+    ? { $gte: minPrice, $lte: maxPrice }
+    : undefined;
+
   const tags = query.tags as string;
   const startDate = query.startDate as string;
   const endDate = query.endDate as string;
@@ -27,8 +35,8 @@ const getCoursesFromDB = async (query: Record<string, unknown>) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filter: Record<string, any> = {};
-  if (minPrice !== undefined && maxPrice !== undefined) {
-    filter.price = { $gte: minPrice, $lte: maxPrice };
+  if (priceFilter) {
+    filter.price = priceFilter;
   }
   if (tags) {
     filter['tags.name'] = tags;
@@ -52,7 +60,8 @@ const getCoursesFromDB = async (query: Record<string, unknown>) => {
   const courses = await Course.find(filter)
     .sort({ [sortBy]: sortOrder })
     .skip((page - 1) * limit)
-    .limit(limit);
+    .limit(limit)
+    .populate('createdBy', '_id username email role');
 
   const total = await Course.countDocuments(filter);
 
@@ -185,10 +194,7 @@ const updateCourseInDB = async (
     courseId,
     modifiedUpdatedData,
     { new: true, runValidators: true },
-  ).populate(
-    'createdBy',
-    '_id username email role',
-  );
+  ).populate('createdBy', '_id username email role');
 
   return updatedCourse;
 };

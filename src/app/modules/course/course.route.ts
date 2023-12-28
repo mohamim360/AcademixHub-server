@@ -6,13 +6,14 @@ import {
   courseValidationSchema,
 } from './course.validation';
 import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
 
 //Create a Course
 router.post(
   '/course',
-  auth('admin'),
+  auth(USER_ROLE.admin),
   validateRequest(courseValidationSchema),
 
   CourseController.createCourse,
@@ -26,7 +27,7 @@ router.get('/courses', CourseController.getCourses);
 
 //update course
 router.put(
-  '/courses/:courseId',auth('admin'),
+  '/courses/:courseId',auth(USER_ROLE.admin),
   validateRequest(UpdateCourseValidationSchema),
   CourseController.updateCourse,
 );

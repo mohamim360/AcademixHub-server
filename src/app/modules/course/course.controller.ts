@@ -13,11 +13,11 @@ const createCourse = catchAsync(async (req, res) => {
 
   courseData.durationInWeeks = durationInWeeks;
 
-  const result = await CourseServices.createCourseIntoDB(courseData,AdminId);
+  const result = await CourseServices.createCourseIntoDB(courseData, AdminId);
 
   res.status(201).json({
     success: true,
-    "statusCode": 201,
+    statusCode: 201,
     message: 'Course created successfully',
     data: result,
   });
@@ -36,16 +36,14 @@ const getCourses = catchAsync(async (req, res) => {
       limit: result.limit,
       total: result.total,
     },
-    data: result.courses,
+    data: { courses: result.courses },
   });
 });
 
 const getBestCourse = catchAsync(async (req, res) => {
   const result = await CourseServices.getBestCourseFromDB();
 
-  const {
-    _id
-  } = result.course;
+  const { _id } = result.course;
 
   const course = await Course.findById(_id).populate(
     'createdBy',
@@ -77,11 +75,9 @@ const updateCourse = catchAsync(async (req, res) => {
   });
 });
 
-
-
 export const CourseController = {
   createCourse,
   getBestCourse,
   updateCourse,
-  getCourses
+  getCourses,
 };

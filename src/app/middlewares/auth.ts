@@ -4,9 +4,9 @@ import catchAsync from '../utils/catchAsync';
 import config from '../config';
 import { User } from '../modules/user/user.model';
 import { unauthorizedAccessError } from './constants';
+import { TUserRole } from '../modules/user/user.interface';
 
-
-const auth = (requiredRole?: string) => {
+const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
 
@@ -20,10 +20,10 @@ const auth = (requiredRole?: string) => {
         config.jwt_secret as string,
       ) as JwtPayload;
 
-      const { role, email, _id, iat, exp } = decoded;
+      const { role, _id, exp } = decoded;
       const user = await User.findOne({ _id });
 
-      if (!user || (requiredRole && role !== requiredRole)) {
+      if (!user || (requiredRoles && !requiredRoles.includes(role))) {
         return res.status(401).json(unauthorizedAccessError);
       }
 
@@ -33,7 +33,7 @@ const auth = (requiredRole?: string) => {
         return res.status(401).json(unauthorizedAccessError);
       }
 
-      req.user = decoded; 
+      req.user = decoded;
       next();
     } catch (error) {
       return res.status(401).json(unauthorizedAccessError);

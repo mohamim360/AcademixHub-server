@@ -3,6 +3,17 @@ import { TUser, UserModel } from './user.interface';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 
+const passwordHistorySchema = new Schema({
+  password: {
+    type: String,
+    required: true,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const userSchema = new Schema<TUser, UserModel>(
   {
     username: {
@@ -24,6 +35,7 @@ const userSchema = new Schema<TUser, UserModel>(
       enum: ['user', 'admin'],
       default: 'user',
     },
+		passwordHistory: [passwordHistorySchema], 
   },
   { versionKey: false, timestamps: true },
 );
@@ -34,14 +46,12 @@ userSchema.pre('save', async function (next) {
   if (!user.password) {
     return next(new Error('Password is required.'));
   }
-  console.log('Before hashing:', user.password); // Log the password before hashing
 
   user.password = await bcrypt.hash(
     user.password,
     Number(config.bcrypt_salt_rounds),
   );
 
-  console.log('After hashing:', user.password);
   next();
 });
 
@@ -49,8 +59,7 @@ userSchema.statics.isPasswordMatched = async function (
   plainTextPassword,
   hashedPassword,
 ) {
-  console.log('plainTextPassword:', plainTextPassword);
-  console.log('hashedPassword:', hashedPassword);
+
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
 

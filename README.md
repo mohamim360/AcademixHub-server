@@ -7,16 +7,6 @@ Run the following command to install the project dependencies:
 ```bash
 npm install
 ```
-
-### Step 2: Set Environment Variables
-Create a `.env` file in the root directory of your project and add the following content:
-
-```env
-NODE_ENV=development
-PORT=5000
-DATABASE_URL=mongodb+srv://mohamimL2A3:32iEVhiDdZ3ASrpb@cluster0.tmnbztj.mongodb.net/course-review?retryWrites=true&w=majority
-```
-
 ### Step 3: Build the TypeScript Code
 If you haven't already, you need to compile TypeScript code into JavaScript. Run the following command:
 
