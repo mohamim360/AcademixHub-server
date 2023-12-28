@@ -2,7 +2,6 @@ import config from '../../config';
 import { TUser } from '../user/user.interface';
 import { User } from '../user/user.model';
 import { TLoginUser } from './auth.interface';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const registerUser = async (user: TUser) => {
@@ -15,17 +14,15 @@ const loginUser = async (userData: TLoginUser) => {
   // checking if the user is exist
   const user = await User.findOne({ username: userData.username });
 
+  console.log('user:', user); // Log the user object
+
   if (!user) {
     throw new Error('User not found');
   }
 
-  const isPasswordMatched = await bcrypt.compare(
-    userData.password,
-    user.password,
-  );
-
-  if (!isPasswordMatched) {
-    throw new Error('Incorrect password');
+  console.log('user.password:', user.password);
+  if (!(await User.isPasswordMatched(userData.password, user.password))) {
+    throw new Error('Password do not  matched');
   }
 
   const JwtPayload = {

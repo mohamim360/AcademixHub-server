@@ -23,7 +23,7 @@ const reviewSchema = new Schema(
       ref: 'User',
     },
   },
-  { versionKey: false },
+  { versionKey: false, timestamps: true },
 );
 
 export const Review = model<TReview>('Review', reviewSchema);

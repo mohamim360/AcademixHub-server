@@ -1,6 +1,7 @@
 import { CourseServices } from './course.service';
 import catchAsync from '../../utils/catchAsync';
 import { calculateDuration } from './utilities';
+import { Course } from './course.model';
 
 const createCourse = catchAsync(async (req, res) => {
   const courseData = req.body;
@@ -43,39 +44,22 @@ const getBestCourse = catchAsync(async (req, res) => {
   const result = await CourseServices.getBestCourseFromDB();
 
   const {
-    _id,
-    title,
-    instructor,
-    categoryId,
-    price,
-    tags,
-    startDate,
-    endDate,
-    language,
-    provider,
-    durationInWeeks,
-    details,
+    _id
   } = result.course;
+
+  const course = await Course.findById(_id).populate(
+    'createdBy',
+    '_id username email role',
+  );
+
+  console.log(course);
 
   res.status(200).json({
     success: true,
     statusCode: 200,
     message: 'Best course retrieved successfully',
     data: {
-      course: {
-        _id,
-        title,
-        instructor,
-        categoryId,
-        price,
-        tags,
-        startDate,
-        endDate,
-        language,
-        provider,
-        durationInWeeks,
-        details,
-      },
+      course: course,
       averageRating: result.averageRating,
       reviewCount: result.reviewCount,
     },

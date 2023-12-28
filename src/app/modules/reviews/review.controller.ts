@@ -5,8 +5,8 @@ import { ReviewServices } from './review.service';
 //Create a Review
 const createReview = catchAsync(async (req, res) => {
   const reviewData = req.body;
-	console.log(reviewData);
-  const result = await ReviewServices.createReviewIntoDB(reviewData);
+  const userData = req.user;
+  const result = await ReviewServices.createReviewIntoDB(reviewData,userData);
 
   res.status(201).json({
     success: true,
@@ -22,12 +22,13 @@ const getCourseWithReviews = catchAsync(async (req, res) => {
   const courseId = new Types.ObjectId(Id);
 
   const result = await ReviewServices.getCourseWithReviewsFromDB(courseId);
+  console.log(result);
 
   res.status(200).json({
     success: true,
     statusCode: 200,
     message: 'Course and Reviews retrieved successfully',
-    data: result,
+    data:result
   });
 });
 
