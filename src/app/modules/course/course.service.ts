@@ -185,6 +185,9 @@ const updateCourseInDB = async (
     courseId,
     modifiedUpdatedData,
     { new: true, runValidators: true },
+  ).populate(
+    'createdBy',
+    '_id username email role',
   );
 
   return updatedCourse;

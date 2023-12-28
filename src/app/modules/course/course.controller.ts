@@ -52,8 +52,6 @@ const getBestCourse = catchAsync(async (req, res) => {
     '_id username email role',
   );
 
-  console.log(course);
-
   res.status(200).json({
     success: true,
     statusCode: 200,

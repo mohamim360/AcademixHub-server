@@ -26,7 +26,7 @@ router.get('/courses', CourseController.getCourses);
 
 //update course
 router.put(
-  '/courses/:courseId',
+  '/courses/:courseId',auth('admin'),
   validateRequest(UpdateCourseValidationSchema),
   CourseController.updateCourse,
 );
